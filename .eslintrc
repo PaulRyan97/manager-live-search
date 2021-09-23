@@ -1,0 +1,94 @@
+{
+  "extends": [
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "prettier/react",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "env": {
+    "browser": true,
+    "es6": true,
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": [".eslintrc"],
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": "warn",
+    "@typescript-eslint/ban-types": "off",
+    "@typescript-eslint/dot-notation": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-shadow": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-unused-expressions": [
+      "error",
+      {
+        "allowShortCircuit": true
+      }
+    ],
+    "@typescript-eslint/prefer-as-const": "off",
+    "class-methods-use-this": "off",
+    "default-case": "off",
+    "func-names": "off",
+    "linebreak-style": "off",
+    "import/no-cycle": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/order": "off",
+    "import/prefer-default-export": "off",
+    "jsx-a11y/anchor-is-valid": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/label-has-associated-control": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "max-classes-per-file": "off",
+    "no-bitwise": "off",
+    "no-case-declarations": "off",
+    "no-prototype-builtins": "warn",
+    "no-use-before-define": "off",
+    "no-nested-ternary": "off",
+    "no-plusplus": "off",
+    "no-param-reassign": "off",
+    "no-underscore-dangle": "off",
+    "object-shorthand": "off",
+    "prefer-const": "off",
+    "prefer-destructuring": "off",
+    "prefer-template": "off",
+    "radix": "off",
+    "react/destructuring-assignment": "off",
+    "react/jsx-curly-brace-presence": "off",
+    "react/jsx-boolean-value": "off",
+    "react/jsx-no-bind": "off",
+    "react/jsx-no-duplicate-props": [
+      "error",
+      {
+        "ignoreCase": false
+      }
+    ],
+    "react/jsx-props-no-spreading": "off",
+    "react/no-array-index-key": "off",
+    "react/no-did-update-set-state": "off",
+    "react/require-default-props": "off",
+    "react/sort-comp": "off",
+    "react/static-property-placement": "off",
+    "spaced-comment": "off"
+  }
+}
