@@ -1,11 +1,15 @@
 import React from 'react';
-import '@ionic/react/css/core.css';
 import { useDispatch } from 'react-redux';
+import ManagerDropdownComponent from '../Search/ManagerDropdownComponent';
 
 const App = () => {
     const dispatch = useDispatch();
 
-    return <div>TODO Put search here</div>;
+    return (
+        <div>
+            <ManagerDropdownComponent />
+        </div>
+    );
 };
 
 export default App;
