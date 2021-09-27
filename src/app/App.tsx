@@ -1,13 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import ManagerDropdownComponent from '../Search/ManagerDropdownComponent';
+import ManagerDropdownComponentRedux from '../Search/ManagerDropdownComponentRedux';
 
 const App = () => {
-    const dispatch = useDispatch();
-
     return (
         <div>
-            <ManagerDropdownComponent />
+            <ManagerDropdownComponentRedux />
         </div>
     );
 };

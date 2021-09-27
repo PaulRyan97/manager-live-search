@@ -3,10 +3,13 @@ import { jsx } from '@emotion/react';
 import React, { useEffect, useMemo, useCallback, useState, useRef, KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
 import ArrowDownIcon from '../images/arrowDown.svg';
-import { API_ENDPOINT, borderGrey, highlightedGreen } from '../utils/constants';
-import axios, { AxiosResponse } from 'axios';
-import { DataResponse, EmployeeDetails, EmployeeMap } from '../types/employeeDataTypes';
-import { mapEmployeeData } from './helpers';
+import { borderGrey, highlightedGreen } from '../utils/constants';
+import { EmployeeDetails, EmployeeMap } from '../types/employeeDataTypes';
+import { connect } from 'react-redux';
+import { StoreType } from '../store';
+import { Action } from 'redux';
+import { fetchEmployeeData } from './actions/searchActions';
+import { ThunkDispatch } from 'redux-thunk';
 import ManagerMenuItem from './ManagerMenuItem';
 
 const Input = styled.input({
@@ -47,30 +50,28 @@ const DropdownMenu = styled.div({
     },
 });
 
-const ManagerDropdownComponent = () => {
+type Props = {
+    employeeData: EmployeeMap | null;
+    dispatch: ThunkDispatch<StoreType, {}, Action>;
+};
+
+const ManagerDropdownComponent = (props: Props) => {
+    const { employeeData, dispatch } = props;
+
     const [searchValue, setSearchValue] = useState('');
     const [showDropdown, setDropdownShown] = useState(false);
-    const [managerData, setManagerData] = useState<EmployeeMap | null>(null);
     const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
     const [filteredIds, setFilteredIds] = useState<string[]>([]);
     const menuItemsRefs = useRef<Array<HTMLDivElement | null>>([]);
 
     useEffect(() => {
-        axios.get(API_ENDPOINT).then((result: AxiosResponse<DataResponse>) => {
-            let responseData: DataResponse = result.data;
-            if (responseData) {
-                const employeeMap = mapEmployeeData(responseData);
-
-                setManagerData(employeeMap);
-                setFilteredIds(Object.keys(employeeMap));
-            }
-        });
-    }, []);
+        dispatch(fetchEmployeeData());
+    }, [dispatch]);
 
     useEffect(() => {
         const filterManager = (managerId: string): boolean => {
-            if (managerData) {
-                const manager = managerData[managerId];
+            if (employeeData) {
+                const manager = employeeData[managerId];
                 let firstName = manager.firstName.toLowerCase();
                 let lastName = manager.lastName.toLowerCase();
                 let name = manager.name.toLowerCase();
@@ -80,23 +81,23 @@ const ManagerDropdownComponent = () => {
             return false;
         };
 
-        if (managerData) {
-            const filteredManagers = Object.keys(managerData).filter(filterManager);
+        if (employeeData) {
+            const filteredManagers = Object.keys(employeeData).filter(filterManager);
             setFilteredIds(filteredManagers);
             menuItemsRefs.current = [];
             setSelectedItemIndex(filteredManagers.length > 0 ? 0 : -1);
         }
-    }, [searchValue, managerData]);
+    }, [searchValue, employeeData]);
 
     const managerList = useMemo(() => {
-        if (managerData) {
+        if (employeeData) {
             return filteredIds.map((managerId: string, index: number) => {
-                const manager: EmployeeDetails = managerData[managerId];
+                const manager: EmployeeDetails = employeeData[managerId];
                 return <ManagerMenuItem id={managerId} manager={manager} isHighlighted={selectedItemIndex === index} refCallback={(el) => (menuItemsRefs.current[index] = el)} />;
             });
         }
         return null;
-    }, [managerData, filteredIds, selectedItemIndex]);
+    }, [employeeData, filteredIds, selectedItemIndex]);
 
     const onMenuKeyDown = useCallback(
         (event: KeyboardEvent<HTMLDivElement>) => {
@@ -115,13 +116,13 @@ const ManagerDropdownComponent = () => {
 
     const onInputConfirm = useCallback(
         (event: KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === 'Enter' && selectedItemIndex !== -1 && managerData) {
-                let managerName = managerData[filteredIds[selectedItemIndex]].name;
+            if (event.key === 'Enter' && selectedItemIndex !== -1 && employeeData) {
+                let managerName = employeeData[filteredIds[selectedItemIndex]].name;
                 setSearchValue(managerName);
                 event.currentTarget.blur();
             }
         },
-        [selectedItemIndex, managerData, filteredIds]
+        [selectedItemIndex, employeeData, filteredIds]
     );
 
     return (
@@ -150,4 +151,10 @@ const ManagerDropdownComponent = () => {
     );
 };
 
-export default ManagerDropdownComponent;
+const mapStateToProps = (state: StoreType) => {
+    return {
+        employeeData: state.searchState.employeeData,
+    };
+};
+
+export default connect(mapStateToProps)(ManagerDropdownComponent);

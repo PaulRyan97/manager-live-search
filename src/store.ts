@@ -1,16 +1,16 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
-import appReducer, { AppStateType } from './app/appReducer';
+import searchReducer, { SearchStateType } from './Search/reducers/searchReducer';
 
 const reducers = combineReducers({
-    appState: appReducer,
+    searchState: searchReducer,
 });
 
 const logger = createLogger({});
 
 export type StoreType = {
-    appState: AppStateType;
+    searchState: SearchStateType;
 };
 
 const store = createStore(reducers, applyMiddleware(ReduxThunk, logger));
