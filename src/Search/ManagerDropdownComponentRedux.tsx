@@ -11,6 +11,7 @@ import { Action } from 'redux';
 import { fetchEmployeeData } from './actions/searchActions';
 import { ThunkDispatch } from 'redux-thunk';
 import ManagerMenuItem from './ManagerMenuItem';
+import ArrowUpIcon from '../images/arrowUp.svg';
 
 const Input = styled.input({
     border: 'none',
@@ -26,6 +27,7 @@ const InputWrapper = styled.div({
     padding: '0px 5px',
     display: 'flex',
     alignItems: 'center',
+    backgroundColor: 'white',
     transition: 'border 100ms',
     '&:focus-within': {
         border: `1px solid ${highlightedGreen}`,
@@ -41,6 +43,7 @@ const DropdownMenu = styled.div({
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: 'white',
     '& > :not(:last-child)': {
         borderBottom: `1px solid ${borderGrey}`,
     },
@@ -52,11 +55,12 @@ const DropdownMenu = styled.div({
 
 type Props = {
     employeeData: EmployeeMap | null;
+    fetchError: boolean;
     dispatch: ThunkDispatch<StoreType, {}, Action>;
 };
 
-const ManagerDropdownComponent = (props: Props) => {
-    const { employeeData, dispatch } = props;
+const ManagerDropdownComponentRedux = (props: Props) => {
+    const { employeeData, fetchError, dispatch } = props;
 
     const [searchValue, setSearchValue] = useState('');
     const [showDropdown, setDropdownShown] = useState(false);
@@ -127,10 +131,12 @@ const ManagerDropdownComponent = (props: Props) => {
 
     return (
         <div style={{ width: 300 }} onKeyDown={onMenuKeyDown}>
+            <span>{'Using Redux'}</span>
             <InputWrapper>
                 <Input
                     value={searchValue}
                     onKeyDown={onInputConfirm}
+                    disabled={fetchError}
                     onFocus={() => {
                         setDropdownShown(true);
                         if (managerList && managerList.length > 0) {
@@ -144,9 +150,10 @@ const ManagerDropdownComponent = (props: Props) => {
                     onChange={(event) => setSearchValue(event.target.value)}
                     placeholder={'Choose Manager'}
                 />
-                <img src={ArrowDownIcon} />
+                <img src={showDropdown ? ArrowUpIcon : ArrowDownIcon} />
             </InputWrapper>
             {showDropdown ? <DropdownMenu>{managerList}</DropdownMenu> : null}
+            {fetchError ? <div css={{ padding: 10, color: 'red' }}>{'Error fetching employee data'}</div> : null}
         </div>
     );
 };
@@ -154,7 +161,8 @@ const ManagerDropdownComponent = (props: Props) => {
 const mapStateToProps = (state: StoreType) => {
     return {
         employeeData: state.searchState.employeeData,
+        fetchError: state.searchState.fetchError,
     };
 };
 
-export default connect(mapStateToProps)(ManagerDropdownComponent);
+export default connect(mapStateToProps)(ManagerDropdownComponentRedux);

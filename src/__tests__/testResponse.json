@@ -1,0 +1,212 @@
+{
+    "data": [
+        {
+            "type": "employees",
+            "id": "323",
+            "links": {
+                "self": "http://localhost:3000/v1/employees/323"
+            },
+            "attributes": {
+                "identifier": null,
+                "firstName": "John",
+                "lastName": "Doe",
+                "name": "John Doe",
+                "features": [
+                    "engagement"
+                ],
+                "avatar": null,
+                "employmentStart": "2016-01-31T00:00:00.000Z",
+                "external": false,
+                "Last Year Bonus": 3767,
+                "Business Unit": "Sales",
+                "Commute Time": 34,
+                "Age": "1984-02-08",
+                "Department": "Customer Care",
+                "Gender": "Male",
+                "Job Level": "Manager",
+                "Local Office": "Cork",
+                "% of target": 88,
+                "Region": "APAC",
+                "Salary": 76000,
+                "Tenure": "2014-05-31"
+            },
+            "relationships": {
+                "company": {
+                    "data": {
+                        "type": "companies",
+                        "id": "5"
+                    }
+                },
+                "account": {
+                    "data": {
+                        "type": "accounts",
+                        "id": "324"
+                    }
+                },
+                "phones": {
+                    "data": []
+                },
+                "Manager": {
+                    "data": {
+                        "type": "employees",
+                        "id": "201"
+                    }
+                }
+            }
+        },
+        {
+            "type": "employees",
+            "id": "139",
+            "links": {
+                "self": "http://localhost:3000/v1/employees/139"
+            },
+            "attributes": {
+                "identifier": null,
+                "firstName": "Jane",
+                "lastName": "Doe",
+                "name": "Jane Doe",
+                "features": [
+                    "engagement"
+                ],
+                "avatar": null,
+                "employmentStart": "2016-01-31T00:00:00.000Z",
+                "external": false,
+                "Last Year Bonus": 215835,
+                "Business Unit": "People & Operations",
+                "Commute Time": 18,
+                "Age": "1984-04-19",
+                "Department": "Learning and Development",
+                "Gender": "Female",
+                "Job Level": "Executive",
+                "Local Office": "New York",
+                "% of target": 12,
+                "Region": "AMER",
+                "Salary": 332000,
+                "Tenure": "2009-06-30"
+            },
+            "relationships": {
+                "company": {
+                    "data": {
+                        "type": "companies",
+                        "id": "5"
+                    }
+                },
+                "account": {
+                    "data": {
+                        "type": "accounts",
+                        "id": "140"
+                    }
+                },
+                "phones": {
+                    "data": []
+                }
+            }
+        },
+        {
+            "type": "employees",
+            "id": "142",
+            "links": {
+                "self": "http://localhost:3000/v1/employees/142"
+            },
+            "attributes": {
+                "identifier": null,
+                "firstName": "Test",
+                "lastName": "Employee",
+                "name": "Test Employee",
+                "features": [
+                    "engagement"
+                ],
+                "avatar": null,
+                "employmentStart": "2016-01-31T00:00:00.000Z",
+                "external": false,
+                "Last Year Bonus": 95050,
+                "Business Unit": "Marketing",
+                "Commute Time": 131,
+                "Age": "1976-12-19",
+                "Department": "Media",
+                "Gender": "Female",
+                "Job Level": "Executive",
+                "Local Office": "London",
+                "% of target": 166,
+                "Region": "EMEA",
+                "Salary": 248000,
+                "Tenure": "2000-05-15"
+            },
+            "relationships": {
+                "company": {
+                    "data": {
+                        "type": "companies",
+                        "id": "5"
+                    }
+                },
+                "account": {
+                    "data": {
+                        "type": "accounts",
+                        "id": "143"
+                    }
+                },
+                "phones": {
+                    "data": []
+                },
+                "Manager": {
+                    "data": {
+                        "type": "employees",
+                        "id": "139"
+                    }
+                }
+            }
+        }
+    ],
+    "included": [
+        {
+            "type": "accounts",
+            "id": "140",
+            "links": {
+                "self": "http://localhost:3000/v1/accounts/140"
+            },
+            "attributes": {
+                "email": "jane.doe@email.com",
+                "locale": null,
+                "timezone": null,
+                "bouncedAt": null,
+                "bounceReason": null,
+                "localeEffective": "en-GB",
+                "timezoneEffective": null
+            }
+        },
+        {
+            "type": "accounts",
+            "id": "143",
+            "links": {
+                "self": "http://localhost:3000/v1/accounts/143"
+            },
+            "attributes": {
+                "email": "test.employee@email.com",
+                "locale": null,
+                "timezone": null,
+                "bouncedAt": null,
+                "bounceReason": null,
+                "localeEffective": null,
+                "timezoneEffective": null
+            }
+        },
+        {
+            "type": "accounts",
+            "id": "324",
+            "links": {
+                "self": "http://localhost:3000/v1/accounts/324"
+            },
+            "attributes": {
+                "email": "john.doe@email.com",
+                "locale": null,
+                "timezone": null,
+                "bouncedAt": null,
+                "bounceReason": null,
+                "localeEffective": null,
+                "timezoneEffective": null
+            }
+        }
+    ],
+    "meta": {},
+    "links": {}
+}

@@ -3,6 +3,7 @@ import { jsx } from '@emotion/react';
 import React, { useEffect, useMemo, useCallback, useState, useRef, KeyboardEvent } from 'react';
 import styled from '@emotion/styled';
 import ArrowDownIcon from '../images/arrowDown.svg';
+import ArrowUpIcon from '../images/arrowUp.svg';
 import { API_ENDPOINT, borderGrey, highlightedGreen } from '../utils/constants';
 import axios, { AxiosResponse } from 'axios';
 import { DataResponse, EmployeeDetails, EmployeeMap } from '../types/employeeDataTypes';
@@ -23,6 +24,7 @@ const InputWrapper = styled.div({
     padding: '0px 5px',
     display: 'flex',
     alignItems: 'center',
+    backgroundColor: 'white',
     transition: 'border 100ms',
     '&:focus-within': {
         border: `1px solid ${highlightedGreen}`,
@@ -38,6 +40,7 @@ const DropdownMenu = styled.div({
     overflowY: 'auto',
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: 'white',
     '& > :not(:last-child)': {
         borderBottom: `1px solid ${borderGrey}`,
     },
@@ -53,18 +56,25 @@ const ManagerDropdownComponent = () => {
     const [managerData, setManagerData] = useState<EmployeeMap | null>(null);
     const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
     const [filteredIds, setFilteredIds] = useState<string[]>([]);
+    const [fetchError, setFetchError] = useState(false);
     const menuItemsRefs = useRef<Array<HTMLDivElement | null>>([]);
 
     useEffect(() => {
-        axios.get(API_ENDPOINT).then((result: AxiosResponse<DataResponse>) => {
-            let responseData: DataResponse = result.data;
-            if (responseData) {
-                const employeeMap = mapEmployeeData(responseData);
+        axios
+            .get(API_ENDPOINT)
+            .then((result: AxiosResponse<DataResponse>) => {
+                let responseData: DataResponse = result.data;
+                if (responseData) {
+                    const employeeMap = mapEmployeeData(responseData);
 
-                setManagerData(employeeMap);
-                setFilteredIds(Object.keys(employeeMap));
-            }
-        });
+                    setManagerData(employeeMap);
+                    setFilteredIds(Object.keys(employeeMap));
+                    setFetchError(false);
+                }
+            })
+            .catch(() => {
+                setFetchError(true);
+            });
     }, []);
 
     useEffect(() => {
@@ -92,7 +102,15 @@ const ManagerDropdownComponent = () => {
         if (managerData) {
             return filteredIds.map((managerId: string, index: number) => {
                 const manager: EmployeeDetails = managerData[managerId];
-                return <ManagerMenuItem id={managerId} manager={manager} isHighlighted={selectedItemIndex === index} refCallback={(el) => (menuItemsRefs.current[index] = el)} />;
+                return (
+                    <ManagerMenuItem
+                        id={managerId}
+                        manager={manager}
+                        data-testid={'manager-' + managerId}
+                        isHighlighted={selectedItemIndex === index}
+                        refCallback={(el) => (menuItemsRefs.current[index] = el)}
+                    />
+                );
             });
         }
         return null;
@@ -126,10 +144,12 @@ const ManagerDropdownComponent = () => {
 
     return (
         <div style={{ width: 300 }} onKeyDown={onMenuKeyDown}>
+            <span>{'Local State'}</span>
             <InputWrapper>
                 <Input
                     value={searchValue}
                     onKeyDown={onInputConfirm}
+                    disabled={fetchError}
                     onFocus={() => {
                         setDropdownShown(true);
                         if (managerList && managerList.length > 0) {
@@ -143,9 +163,10 @@ const ManagerDropdownComponent = () => {
                     onChange={(event) => setSearchValue(event.target.value)}
                     placeholder={'Choose Manager'}
                 />
-                <img src={ArrowDownIcon} />
+                <img src={showDropdown ? ArrowUpIcon : ArrowDownIcon} />
             </InputWrapper>
-            {showDropdown ? <DropdownMenu>{managerList}</DropdownMenu> : null}
+            {showDropdown ? <DropdownMenu data-testid={'dropdown-menu'}>{managerList}</DropdownMenu> : null}
+            {fetchError ? <div css={{ padding: 10, color: 'red' }}>{'Error fetching employee data'}</div> : null}
         </div>
     );
 };
