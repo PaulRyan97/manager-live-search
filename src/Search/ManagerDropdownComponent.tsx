@@ -165,7 +165,11 @@ const ManagerDropdownComponent = () => {
                 />
                 <img src={showDropdown ? ArrowUpIcon : ArrowDownIcon} />
             </InputWrapper>
-            {showDropdown ? <DropdownMenu data-testid={'dropdown-menu'}>{managerList}</DropdownMenu> : null}
+            {showDropdown ? (
+                <DropdownMenu data-testid={'dropdown-menu'}>
+                    {managerList && managerList.length > 0 ? managerList : <div css={{ padding: 10 }}>{'No results found'}</div>}
+                </DropdownMenu>
+            ) : null}
             {fetchError ? <div css={{ padding: 10, color: 'red' }}>{'Error fetching employee data'}</div> : null}
         </div>
     );
